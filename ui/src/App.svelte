@@ -48,7 +48,7 @@
 
   function logout() {
     sessionStorage.removeItem('token');
-    location.replace('http://localhost:8080/oauth/logout');
+    location.replace('http://localhost:8080/oauth/logout?token=' + token);
   }
 
   const token = sessionStorage.getItem('token');
