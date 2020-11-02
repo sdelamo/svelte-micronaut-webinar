@@ -29,8 +29,24 @@
   $: valueRange = maxValue - minValue;
   $: viewBox = `0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`;
 
+  $: hoverBarIndex = -1;
+  $: hoverText = 0;
+  $: hoverTransform = '';
+  $: hoverX = 0;
+  $: hoverY = 0;
+
   const getBarColor = (index: number) =>
     index % 2 === 0 ? BAR_DARK : BAR_LIGHT;
+
+  function handleHover(index: number, item, event) {
+    hoverBarIndex = index;
+    const {target} = event;
+    const x = target.getAttribute('x');
+    hoverX = Number(x) + BAR_WIDTH / 2;
+    hoverY = CHART_HEIGHT - 35;
+    hoverText = item.value.toFixed(decimalPlaces);
+    hoverTransform = `rotate(-90, ${hoverX + 4}, ${hoverY})`;
+  }
 </script>
 
 <section>
@@ -40,11 +56,14 @@
     <svg height={CHART_HEIGHT} width={CHART_WIDTH} {viewBox}>
       {#each data as item, index}
         <rect
+          class={index === hoverBarIndex ? 'hover' : ''}
           x={BAR_WIDTH * index}
           y={((maxValue - item.value) / valueRange) * CHART_HEIGHT}
           width={BAR_WIDTH}
           height={((item.value - minValue) / valueRange) * CHART_HEIGHT}
-          fill={getBarColor(index)}>
+          fill={getBarColor(index)}
+          on:mouseover={event => handleHover(index, item, event)}
+          on:mouseout={() => (hoverBarIndex = -1)}>
           {item.day}
           -
           {item.value}
@@ -55,6 +74,14 @@
           <text x={BAR_WIDTH * index} y={CHART_HEIGHT - 2}>{item.day}</text>
         {/if}
       {/each}
+      <text
+        class="hover-text"
+        text-anchor="middle"
+        transform={hoverTransform}
+        x={hoverX}
+        y={hoverY}>
+        {hoverText}
+      </text>
     </svg>
 
     <div class="last-value">{lastValue.toFixed(decimalPlaces)}</div>
@@ -74,6 +101,16 @@
     border-radius: 0.5rem;
     color: #cb77a2;
     position: relative;
+  }
+
+  .hover {
+    fill: lightblue;
+  }
+
+  .hover-text {
+    pointer-events: none;
+    stroke: black;
+    transform: rotate(90);
   }
 
   .last-delta {
