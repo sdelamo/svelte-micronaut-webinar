@@ -1,11 +1,16 @@
 <script lang="ts">
-  export let data: {day?: number; timestamp: number; value: number}[];
+  export let data: {
+    hour?: number;
+    period: number;
+    timestamp: number;
+    value: number;
+  }[];
+  export let decimalPlaces;
   export let title: string;
   export let subtitle: string;
 
   const BAR_DARK = '#e7e7e0';
   const BAR_LIGHT = '#ebebe4';
-  const CARD_BORDER = 8; // 0.5rem
   const CARD_PADDING = 16; // 1rem
   const SECTION_WIDTH = 400;
   const CHART_HEIGHT = 130;
@@ -13,23 +18,15 @@
   const DAYS_IN_MONTH = 31; // It's okay that not all months have this many.
   const BAR_WIDTH = CHART_WIDTH / DAYS_IN_MONTH;
 
-  $: {
-    // Only use the last 31 days of data.
-    if (data.length > DAYS_IN_MONTH) {
-      data = data.slice(data.length - DAYS_IN_MONTH);
-      console.log('CounterTrend.svelte x: data.length =', data.length);
-    }
-
-    // Add day of month to each item.
-    data.forEach(item => (item.day = new Date(item.timestamp).getDate()));
-
-    console.log('CounterTrend.svelte x: data =', data);
-  }
-
-  $: lastValue = data[data.length - 1].value;
-  $: prevValue = data[data.length - 2].value;
+  $: lastValue = data.length ? data[data.length - 1].value : 0;
+  $: prevValue = data.length ? data[data.length - 2].value : 0;
   $: lastDelta = lastValue - prevValue;
+  $: minValue = data.reduce(
+    (acc, item) => Math.min(acc, item.value),
+    Number.MAX_VALUE
+  );
   $: maxValue = data.reduce((acc, item) => Math.max(acc, item.value), 0);
+  $: valueRange = maxValue - minValue;
   $: viewBox = `0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`;
 
   const getBarColor = (index: number) =>
@@ -44,27 +41,27 @@
       {#each data as item, index}
         <rect
           x={BAR_WIDTH * index}
-          y={(maxValue - item.value) / maxValue * CHART_HEIGHT}
+          y={((item.value - minValue) / valueRange) * CHART_HEIGHT}
           width={BAR_WIDTH}
-          height={CHART_HEIGHT * item.value / maxValue}
+          height={(CHART_HEIGHT * item.value) / maxValue}
           fill={getBarColor(index)}>
-          {item.day}
+          {item.hour}
           -
           {item.value}
         </rect>
       {/each}
       {#each data as item, index}
         {#if index % 5 === 0}
-          <text x={BAR_WIDTH * index} y={CHART_HEIGHT - 2}>
-            {item.day}
-          </text>
+          <text x={BAR_WIDTH * index} y={CHART_HEIGHT - 2}>{item.hour}</text>
         {/if}
       {/each}
     </svg>
 
-    <div class="last-value">{lastValue}</div>
+    <div class="last-value">{lastValue.toFixed(decimalPlaces)}</div>
     <div class="subtitle">{subtitle}</div>
-    <div class="last-delta">{lastDelta >= 0 ? '+' : ''}{lastDelta}</div>
+    <div class="last-delta">
+      {lastDelta >= 0 ? '+' : ''}{lastDelta.toFixed(decimalPlaces)}
+    </div>
   </div>
 </section>
 
@@ -98,10 +95,8 @@
   }
 
   section {
-    background-image: url('/images/wooden-panels.jpg');
-    background-size: 80%;
     display: inline-block;
-    padding: 1rem;
+    padding: 1rem 1rem 0 0;
     width: 400px;
   }
 
