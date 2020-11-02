@@ -1,6 +1,6 @@
 <script lang="ts">
   export let data: {
-    hour?: number;
+    day?: number;
     period: number;
     timestamp: number;
     value: number;
@@ -45,14 +45,14 @@
           width={BAR_WIDTH}
           height={((item.value - minValue) / valueRange) * CHART_HEIGHT}
           fill={getBarColor(index)}>
-          {item.hour}
+          {item.day}
           -
           {item.value}
         </rect>
       {/each}
       {#each data as item, index}
         {#if index % 5 === 0}
-          <text x={BAR_WIDTH * index} y={CHART_HEIGHT - 2}>{item.hour}</text>
+          <text x={BAR_WIDTH * index} y={CHART_HEIGHT - 2}>{item.day}</text>
         {/if}
       {/each}
     </svg>

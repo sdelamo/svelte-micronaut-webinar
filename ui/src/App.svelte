@@ -35,7 +35,7 @@
               'date =',
               date
             );
-            obj.hour = date.getHours();
+            obj.day = date.getDate();
             data.push(obj);
           }
           data.reverse(); // to order from oldest to newest
