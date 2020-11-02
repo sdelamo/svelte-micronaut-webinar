@@ -15,22 +15,30 @@
     if (token) sessionStorage.setItem('token', token);
   });
 
-  async function loadData() {
+  async function myFetch(urlSuffix) {
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
+    let res = await fetch(URL_PREFIX + urlSuffix, {headers});
+    if (res.status === 401) {
+      login();
+    } else {
+      return res.json();
+    }
+  }
 
+  async function loadData() {
     try {
-      const res = await fetch(URL_PREFIX + 'widgets', {headers});
-      const json = await res.json();
+      let json = await myFetch('widgets');
+      if (!json) return; // login
       for (const d of json.data) {
         title = d.title;
         for (const slot of d.slots) {
           subtitle = slot.subtitle;
           const {label} = slot;
-          const res2 = await fetch(URL_PREFIX + 'values/' + label, {headers});
-          const json2 = await res2.json();
+          json = await myFetch('values/' + label);
+          if (!json) return; // login
           const data = [];
-          for (const obj of json2.data) {
+          for (const obj of json.data) {
             const date = new Date(obj.timestamp * 1000);
             obj.day = date.getDate();
             data.push(obj);
@@ -46,6 +54,10 @@
     }
   }
 
+  function login() {
+    location.replace('http://localhost:8080/oauth/login/cognito');
+  }
+
   function logout() {
     sessionStorage.removeItem('token');
     location.replace('http://localhost:8080/oauth/logout?token=' + token);
@@ -55,7 +67,7 @@
   if (token) {
     loadData();
   } else {
-    location.replace('http://localhost:8080/oauth/login/cognito');
+    login();
   }
 </script>
 
