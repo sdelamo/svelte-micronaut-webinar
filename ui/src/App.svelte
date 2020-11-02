@@ -2,7 +2,8 @@
   import {onMount} from 'svelte';
   import CounterTrend from './CounterTrend.svelte';
 
-  const URL_PREFIX = 'http://localhost:8080/api/';
+  const API_URL_PREFIX = 'http://localhost:8080/api/';
+  const OAUTH_URL_PREFIX = 'http://localhost:8080/oauth/';
 
   $: decimalPlaces = 3;
   $: subtitle = '';
@@ -44,22 +45,25 @@
   }
 
   function login() {
-    location.replace('http://localhost:8080/oauth/login/cognito');
+    location.replace(OAUTH_URL_PREFIX + 'login/cognito');
   }
 
   function logout() {
     sessionStorage.removeItem('token');
-    location.replace('http://localhost:8080/oauth/logout?token=' + token);
+    location.replace(OAUTH_URL_PREFIX + 'logout?token=' + token);
   }
 
   async function myFetch(urlSuffix) {
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
-    let res = await fetch(URL_PREFIX + urlSuffix, {headers});
+    let res = await fetch(API_URL_PREFIX + urlSuffix, {headers});
     if (res.status === 401) {
       login();
-    } else {
+    } else if (res.ok) {
       return res.json();
+    } else {
+      const msg = await res.text();
+      throw new Error(msg);
     }
   }
 
