@@ -15,17 +15,6 @@
     if (token) sessionStorage.setItem('token', token);
   });
 
-  async function myFetch(urlSuffix) {
-    const headers = new Headers();
-    headers.append('Authorization', 'Bearer ' + token);
-    let res = await fetch(URL_PREFIX + urlSuffix, {headers});
-    if (res.status === 401) {
-      login();
-    } else {
-      return res.json();
-    }
-  }
-
   async function loadData() {
     try {
       let json = await myFetch('widgets');
@@ -61,6 +50,17 @@
   function logout() {
     sessionStorage.removeItem('token');
     location.replace('http://localhost:8080/oauth/logout?token=' + token);
+  }
+
+  async function myFetch(urlSuffix) {
+    const headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + token);
+    let res = await fetch(URL_PREFIX + urlSuffix, {headers});
+    if (res.status === 401) {
+      login();
+    } else {
+      return res.json();
+    }
   }
 
   const token = sessionStorage.getItem('token');
