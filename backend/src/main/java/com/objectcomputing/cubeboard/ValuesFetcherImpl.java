@@ -77,14 +77,17 @@ public class ValuesFetcherImpl implements ValuesFetcher {
             throw new NoSuchLabelException();
         }
         List<Value> l = new ArrayList<>();
+
         Instant day = Instant.now();
         for (int i = 0; i < 31; i++) {
+
             Value data = new Value();
             data.setValue(sampleValues.get(i));
             data.setTimestamp(day.getEpochSecond());
+            System.out.println(day.toString());
             data.setPeriod(i);
             l.add(data);
-            day = day.minus(i + 1, ChronoUnit.DAYS);
+            day = day.minus( 1, ChronoUnit.DAYS);
         }
         return l;
     }
