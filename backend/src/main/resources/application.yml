@@ -19,6 +19,9 @@ micronaut:
 ---
 micronaut:
   security:
+    redirect:
+      unauthorized:
+        url: '/oauth/login/cognito'
     oauth2:
       clients:
         cognito:
@@ -29,6 +32,7 @@ micronaut:
     endpoints:
       logout:
         get-allowed: true
+    authentication: idtoken
 ---
 micronaut:
   security:

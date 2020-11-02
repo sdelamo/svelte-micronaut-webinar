@@ -1,14 +1,13 @@
-package com.objectcomputing.cubeboard;
+package com.objectcomputing.cubeboard.security;
 
+import com.objectcomputing.cubeboard.security.AppConfiguration;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.uri.UriBuilder;
 import io.micronaut.security.authentication.AuthenticationResponse;
-import io.micronaut.security.authentication.AuthenticationUserDetailsAdapter;
 import io.micronaut.security.authentication.UserDetails;
-import io.micronaut.security.handlers.LoginHandler;
 import io.micronaut.security.handlers.RedirectingLoginHandler;
 import io.micronaut.security.oauth2.endpoint.token.response.OpenIdUserDetailsMapper;
 
