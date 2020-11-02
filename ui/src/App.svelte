@@ -27,7 +27,7 @@
         for (const slot of d.slots) {
           subtitle = slot.subtitle;
           const {label} = slot;
-          const res2 = await fetch(URL_PREFIX + 'values/' + label);
+          const res2 = await fetch(URL_PREFIX + 'values/' + label, {headers});
           const json2 = await res2.json();
           const data = [];
           for (const obj of json2.data) {
