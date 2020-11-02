@@ -1,4 +1,5 @@
 <script lang="ts">
+  import {onMount} from 'svelte';
   import CounterTrend from './CounterTrend.svelte';
 
   const URL_PREFIX = 'http://localhost:8080/api/';
@@ -7,6 +8,12 @@
   $: subtitle = '';
   $: title = '';
   $: widgets = [];
+
+  onMount(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token');
+    if (token) sessionStorage.setItem('token', token);
+  });
 
   async function loadData() {
     try {
@@ -21,7 +28,14 @@
           const json2 = await res2.json();
           const data = [];
           for (const obj of json2.data) {
-            obj.hour = new Date(obj.timestamp).getHours();
+            const date = new Date(obj.timestamp * 1000);
+            console.log(
+              'App.svelte x: timestamps =',
+              obj.timestamp,
+              'date =',
+              date
+            );
+            obj.hour = date.getHours();
             data.push(obj);
           }
           data.reverse(); // to order from oldest to newest
@@ -36,31 +50,40 @@
     }
   }
 
-  loadData();
+  function logout() {
+    sessionStorage.removeItem('token');
+    location.replace('http://localhost:8080/oauth/logout');
+  }
+
+  const token = sessionStorage.getItem('token');
+  if (token) {
+    loadData();
+  } else {
+    location.replace('http://localhost:8080/oauth/login/cognito');
+  }
 </script>
 
 <main>
-  <!-- <div>
+  {#if token}
+    <!-- <div>
     <label for="dp">Decimal Places:</label>
     <span>{decimalPlaces}</span>
     <input id="dp" type="range" min="0" max="6" bind:value={decimalPlaces} />
   </div> -->
-  {#each widgets as {data, subtitle, title}}
-    <CounterTrend {data} {decimalPlaces} {subtitle} {title} />
-  {/each}
+    <header><button on:click={logout}>Logout</button></header>
+    {#each widgets as {data, subtitle, title}}
+      <CounterTrend {data} {decimalPlaces} {subtitle} {title} />
+    {/each}
+  {/if}
 </main>
 
-<!--<style>
-  div {
-    display: flex;
-    align-items: center;
+<style>
+  button {
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
   }
-
-  label {
-    margin-right: 0.5rem;
+  header {
+    text-align: right;
   }
-
-  span {
-    margin-right: 0.5rem;
-  }
-</style>-->
+</style>
