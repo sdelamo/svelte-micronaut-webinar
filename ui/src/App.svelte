@@ -16,8 +16,11 @@
   });
 
   async function loadData() {
+    const headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + token);
+
     try {
-      const res = await fetch(URL_PREFIX + 'widgets');
+      const res = await fetch(URL_PREFIX + 'widgets', {headers});
       const json = await res.json();
       for (const d of json.data) {
         title = d.title;
