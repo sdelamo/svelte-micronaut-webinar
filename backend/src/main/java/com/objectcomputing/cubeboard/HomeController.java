@@ -2,6 +2,8 @@ package com.objectcomputing.cubeboard;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.links.Link;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,6 +24,7 @@ public class HomeController {
             }
     )
     @Get
+    @Secured(SecurityRule.IS_AUTHENTICATED)
     public HttpResponse<?> index() {
         return HttpResponse.seeOther(URI.create("/swagger-ui/"));
     }

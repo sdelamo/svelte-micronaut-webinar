@@ -2,6 +2,8 @@ package com.objectcomputing.cubeboard;
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class WidgetsController {
      * @return Get a collection of the user's widget
      */
     @Get("/widgets")
+    @Secured(SecurityRule.IS_AUTHENTICATED)
     public WidgetPage index() {
         List<Widget> widgetList = widgetFetcher.findAll();
         WidgetPage page = new WidgetPage();
