@@ -32,12 +32,6 @@
           const data = [];
           for (const obj of json2.data) {
             const date = new Date(obj.timestamp * 1000);
-            console.log(
-              'App.svelte x: timestamps =',
-              obj.timestamp,
-              'date =',
-              date
-            );
             obj.day = date.getDate();
             data.push(obj);
           }
@@ -46,7 +40,6 @@
         }
       }
       widgets = widgets; // trigger reactivity
-      console.log('App.svelte x: widgets =', widgets);
     } catch (e) {
       console.error('App.svelte loadData: e =', e);
       alert('loadData error: ' + e.message);
