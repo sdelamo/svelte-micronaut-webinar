@@ -40,17 +40,17 @@
 </script>
 
 <main>
-  <div>
+  <!-- <div>
     <label for="dp">Decimal Places:</label>
     <span>{decimalPlaces}</span>
     <input id="dp" type="range" min="0" max="6" bind:value={decimalPlaces} />
-  </div>
+  </div> -->
   {#each widgets as {data, subtitle, title}}
     <CounterTrend {data} {decimalPlaces} {subtitle} {title} />
   {/each}
 </main>
 
-<style>
+<!--<style>
   div {
     display: flex;
     align-items: center;
@@ -63,4 +63,4 @@
   span {
     margin-right: 0.5rem;
   }
-</style>
+</style>-->

@@ -96,7 +96,7 @@
 
   section {
     display: inline-block;
-    padding: 1rem 1rem 0 0;
+    padding: 0 1rem 1rem 0;
     width: 400px;
   }
 
