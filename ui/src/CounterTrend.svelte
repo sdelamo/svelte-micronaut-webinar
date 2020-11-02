@@ -41,9 +41,9 @@
       {#each data as item, index}
         <rect
           x={BAR_WIDTH * index}
-          y={((item.value - minValue) / valueRange) * CHART_HEIGHT}
+          y={((maxValue - item.value) / valueRange) * CHART_HEIGHT}
           width={BAR_WIDTH}
-          height={(CHART_HEIGHT * item.value) / maxValue}
+          height={((item.value - minValue) / valueRange) * CHART_HEIGHT}
           fill={getBarColor(index)}>
           {item.hour}
           -
