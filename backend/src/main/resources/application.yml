@@ -19,7 +19,6 @@ micronaut:
 ---
 micronaut:
   security:
-    authentication: idtoken
     oauth2:
       clients:
         cognito:
@@ -30,3 +29,16 @@ micronaut:
     endpoints:
       logout:
         get-allowed: true
+---
+micronaut:
+  security:
+    token:
+      jwt:
+        signatures:
+          jwks:
+            awscognito:
+              url: 'https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_ryzdYRYvn/.well-known/jwks.json'
+---
+app:
+  login-redirect: 'http://localhost:5000'
+  param-token: 'token'
