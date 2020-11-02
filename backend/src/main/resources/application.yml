@@ -16,3 +16,17 @@ micronaut:
   server:
     cors:
       enabled: true
+---
+micronaut:
+  security:
+    authentication: idtoken
+    oauth2:
+      clients:
+        cognito:
+          client-id: '6k4d4vo78ihe4kjv9cegs2crc6' # demo client id
+          client-secret: 'mil0sq088ii31p32rpgllofrnl5f71kgjlcsjmdcv66u4mju52' # demo client secret
+          openid:
+            issuer: 'https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_ryzdYRYvn/' # demo user pool
+    endpoints:
+      logout:
+        get-allowed: true
