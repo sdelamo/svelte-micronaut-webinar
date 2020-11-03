@@ -1,5 +1,4 @@
 <script lang="ts">
-  import {onMount} from 'svelte';
   import CounterTrend from './CounterTrend.svelte';
 
   const API_URL_PREFIX = 'http://localhost:8080/api/';
@@ -9,12 +8,6 @@
   $: subtitle = '';
   $: title = '';
   $: widgets = [];
-
-  onMount(() => {
-    const params = new URLSearchParams(location.search);
-    const token = params.get('token');
-    if (token) sessionStorage.setItem('token', token);
-  });
 
   async function loadData() {
     try {
@@ -67,7 +60,14 @@
     }
   }
 
-  const token = sessionStorage.getItem('token');
+  const params = new URLSearchParams(location.search);
+  let token = params.get('token');
+  if (token) {
+    sessionStorage.setItem('token', token);
+  } else {
+    token = sessionStorage.getItem('token');
+  }
+
   if (token) {
     loadData();
   } else {

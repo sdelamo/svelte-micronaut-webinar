@@ -114,21 +114,25 @@
   }
 
   .last-delta {
+    position: absolute;
+    bottom: 3rem;
+    right: 1rem;
+
     color: var(--day-color);
     font-size: 1.4rem;
     font-weight: bold;
-    position: absolute;
-    bottom: 2rem;
-    right: 1rem;
+    pointer-events: none;
   }
 
   .last-value {
+    position: absolute;
+    bottom: 4.3rem;
+    left: 2rem;
+
     font-size: 4rem;
     font-weight: bold;
     height: 4rem;
-    position: absolute;
-    bottom: 3.3rem;
-    left: 2rem;
+    pointer-events: none;
   }
 
   section {
@@ -138,11 +142,13 @@
   }
 
   .subtitle {
+    position: absolute;
+    bottom: 3rem;
+    left: 2rem;
+
     font-size: 1.2rem;
     font-weight: bold;
-    position: absolute;
-    bottom: 2rem;
-    left: 2rem;
+    pointer-events: none;
   }
 
   svg text {
@@ -156,6 +162,7 @@
     font-size: 0.8rem;
     font-weight: bold;
     padding: 0.5rem;
+    pointer-events: none;
     text-align: right;
     text-transform: uppercase;
     width: 100%;
