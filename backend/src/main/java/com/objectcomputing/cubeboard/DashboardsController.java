@@ -1,5 +1,7 @@
 package com.objectcomputing.cubeboard;
 
+import com.objectcomputing.cubeboard.versioning.ApiVersion;
+import io.micronaut.core.version.annotation.Version;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.security.annotation.Secured;
@@ -16,8 +18,9 @@ public class DashboardsController {
         this.dashboardFetcher = dashboardFetcher;
     }
 
-    @Get("/dashboards")
+    @Version(ApiVersion.V1)
     @Secured(SecurityRule.IS_AUTHENTICATED)
+    @Get("/dashboards")
     public DashboardPage index() {
         List<Dashboard> dashboardList = dashboardFetcher.findAll();
         DashboardPage page = new DashboardPage();

@@ -1,4 +1,4 @@
-package com.objectcomputing.cubeboard;
+package com.objectcomputing.cubeboard.versioning;
 
 public final class ApiVersion {
 

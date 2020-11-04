@@ -1,5 +1,7 @@
 package com.objectcomputing.cubeboard;
 
+import com.objectcomputing.cubeboard.versioning.ApiVersion;
+import io.micronaut.core.version.annotation.Version;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -18,6 +20,7 @@ public class ValuesController {
         this.valuesFetcher = valuesFetcher;
     }
 
+    @Version(ApiVersion.V1)
     @Get("/values/{label}")
     @Secured(SecurityRule.IS_AUTHENTICATED)
     public HttpResponse<?> index(@PathVariable String label) {

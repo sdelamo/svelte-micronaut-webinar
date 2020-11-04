@@ -18,6 +18,11 @@ micronaut:
       enabled: true
 ---
 micronaut:
+  router:
+    versioning:
+      enabled: true
+---
+micronaut:
   security:
     redirect:
       unauthorized:
