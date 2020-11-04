@@ -74,14 +74,16 @@
           <text x={BAR_WIDTH * index} y={CHART_HEIGHT - 2}>{item.day}</text>
         {/if}
       {/each}
-      <text
-        class="hover-text"
-        text-anchor="middle"
-        transform={hoverTransform}
-        x={hoverX}
-        y={hoverY}>
-        {hoverText}
-      </text>
+      {#if hoverBarIndex !== -1}
+        <text
+          class="hover-text"
+          text-anchor="middle"
+          transform={hoverTransform}
+          x={hoverX}
+          y={hoverY}>
+          {hoverText}
+        </text>
+      {/if}
     </svg>
 
     <div class="last-value">{lastValue.toFixed(decimalPlaces)}</div>
