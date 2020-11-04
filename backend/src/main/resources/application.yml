@@ -33,6 +33,17 @@ micronaut:
       logout:
         get-allowed: true
     authentication: idtoken
+    intercept-url-map:
+      -
+        pattern: /swagger/*
+        http-method: GET
+        access:
+          - isAnonymous()
+      -
+        pattern: /swagger-ui/*
+        http-method: GET
+        access:
+          - isAnonymous()
 ---
 micronaut:
   security:

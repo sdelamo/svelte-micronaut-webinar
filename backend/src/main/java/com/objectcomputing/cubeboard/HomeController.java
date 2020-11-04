@@ -24,7 +24,7 @@ public class HomeController {
             }
     )
     @Get
-    @Secured(SecurityRule.IS_AUTHENTICATED)
+    @Secured(SecurityRule.IS_ANONYMOUS)
     public HttpResponse<?> index() {
         return HttpResponse.seeOther(URI.create("/swagger-ui/"));
     }
