@@ -1,4 +1,4 @@
-package com.objectcomputing.cubeboard;
+package com.objectcomputing.cubeboard.security;
 
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.security.authentication.AuthenticationMode;
