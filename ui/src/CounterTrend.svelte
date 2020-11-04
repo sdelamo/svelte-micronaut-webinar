@@ -9,10 +9,8 @@
   export let title: string;
   export let subtitle: string;
 
-  const BAR_DARK = '#e7e7e0';
-  const BAR_LIGHT = '#ebebe4';
   const CARD_PADDING = 16; // 1rem
-  const SECTION_WIDTH = 400;
+  const SECTION_WIDTH = 399;
   const CHART_HEIGHT = 130;
   const CHART_WIDTH = SECTION_WIDTH - CARD_PADDING - 6;
   const DAYS_IN_MONTH = 31; // It's okay that not all months have this many.
@@ -35,8 +33,8 @@
   $: hoverX = 0;
   $: hoverY = 0;
 
-  const getBarColor = (index: number) =>
-    index % 2 === 0 ? BAR_DARK : BAR_LIGHT;
+  const getBarClass = (index: number) =>
+    index % 2 === 0 ? 'even-bar' : 'odd-bar';
 
   function handleHover(index: number, item, event) {
     hoverBarIndex = index;
@@ -50,68 +48,67 @@
 </script>
 
 <section>
-  <div class="card">
-    <div class="title">{title}</div>
+  <div class="title">{title}</div>
 
-    <svg height={CHART_HEIGHT} width={CHART_WIDTH} {viewBox}>
-      {#each data as item, index}
-        <rect
-          class={index === hoverBarIndex ? 'hover' : ''}
-          x={BAR_WIDTH * index}
-          y={((maxValue - item.value) / valueRange) * CHART_HEIGHT}
-          width={BAR_WIDTH}
-          height={((item.value - minValue) / valueRange) * CHART_HEIGHT}
-          fill={getBarColor(index)}
-          on:mouseover={event => handleHover(index, item, event)}
-          on:mouseout={() => (hoverBarIndex = -1)}>
+  <svg height={CHART_HEIGHT} width={CHART_WIDTH} {viewBox}>
+    {#each data as item, index}
+      <rect
+        class={getBarClass(index)}
+        class:hover={index === hoverBarIndex}
+        x={BAR_WIDTH * index}
+        y={((maxValue - item.value) / valueRange) * CHART_HEIGHT}
+        width={BAR_WIDTH}
+        height={((item.value - minValue) / valueRange) * CHART_HEIGHT}
+        on:mouseover={event => handleHover(index, item, event)}
+        on:mouseout={() => (hoverBarIndex = -1)}>
+        {item.day}
+        -
+        {item.value}
+      </rect>
+    {/each}
+    {#each data as item, index}
+      {#if index % 5 === 0}
+        <text class="day" x={BAR_WIDTH * (index + 0.5)} y={CHART_HEIGHT - 2}>
           {item.day}
-          -
-          {item.value}
-        </rect>
-      {/each}
-      {#each data as item, index}
-        {#if index % 5 === 0}
-          <text x={BAR_WIDTH * index} y={CHART_HEIGHT - 2}>{item.day}</text>
-        {/if}
-      {/each}
-      {#if hoverBarIndex !== -1}
-        <text
-          class="hover-text"
-          text-anchor="middle"
-          transform={hoverTransform}
-          x={hoverX}
-          y={hoverY}>
-          {hoverText}
         </text>
       {/if}
-    </svg>
+    {/each}
+    {#if hoverBarIndex !== -1}
+      <text
+        class="hover-text"
+        text-anchor="middle"
+        transform={hoverTransform}
+        x={hoverX}
+        y={hoverY}>
+        {hoverText}
+      </text>
+    {/if}
+  </svg>
 
-    <div class="last-value">{lastValue.toFixed(decimalPlaces)}</div>
-    <div class="subtitle">{subtitle}</div>
-    <div class="last-delta">
-      {lastDelta >= 0 ? '+' : ''}{lastDelta.toFixed(decimalPlaces)}
-    </div>
+  <div class="last-value">{lastValue.toFixed(decimalPlaces)}</div>
+  <div class="subtitle">{subtitle}</div>
+  <div class="last-delta">
+    {lastDelta >= 0 ? '+' : ''}{lastDelta.toFixed(decimalPlaces)}
   </div>
 </section>
 
 <style>
-  .card {
-    --day-color: #b8b8b8;
+  .day {
+    fill: white;
+    text-anchor: middle;
+  }
 
-    background-color: #f4f4ed;
-    border: solid #eee4d5 0.7rem;
-    border-radius: 0.5rem;
-    color: #cb77a2;
-    position: relative;
+  .even-bar {
+    fill: var(--blue);
   }
 
   .hover {
-    fill: lightblue;
+    fill: purple !important;
   }
 
   .hover-text {
     pointer-events: none;
-    stroke: black;
+    stroke: white;
     transform: rotate(90);
   }
 
@@ -120,13 +117,14 @@
     bottom: 3rem;
     right: 1rem;
 
-    color: var(--day-color);
+    color: var(--red);
     font-size: 1.4rem;
     font-weight: bold;
     pointer-events: none;
   }
 
   .last-value {
+    color: var(--yellow);
     position: absolute;
     bottom: 4.3rem;
     left: 2rem;
@@ -137,13 +135,33 @@
     pointer-events: none;
   }
 
+  .odd-bar {
+    fill: var(--green);
+  }
+
   section {
-    display: inline-block;
-    padding: 0 1rem 1rem 0;
+    --blue: #2e6bdf;
+    --green: #53b735;
+    --red: #eb4727;
+    --purple: #8c1bb9;
+    --yellow: #f6c944;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: transparent;
+    border: solid #eee4d5 10px;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    color: darkgray;
+    position: relative;
     width: 400px;
   }
 
   .subtitle {
+    color: var(--red);
     position: absolute;
     bottom: 3rem;
     left: 2rem;
@@ -154,13 +172,13 @@
   }
 
   svg text {
-    fill: var(--day-color);
+    fill: var(--red);
     font-size: 0.7rem;
   }
 
   .title {
     box-sizing: border-box;
-    color: darkgray;
+    color: var(--purple);
     font-size: 0.8rem;
     font-weight: bold;
     padding: 0.5rem;
