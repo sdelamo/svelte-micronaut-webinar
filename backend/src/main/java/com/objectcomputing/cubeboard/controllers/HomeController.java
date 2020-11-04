@@ -1,4 +1,4 @@
-package com.objectcomputing.cubeboard;
+package com.objectcomputing.cubeboard.controllers;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;

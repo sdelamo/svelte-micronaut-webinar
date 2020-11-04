@@ -1,6 +1,6 @@
 package com.objectcomputing.cubeboard.security;
 
-import com.objectcomputing.cubeboard.security.AppConfiguration;
+import com.objectcomputing.cubeboard.conf.AppConfiguration;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
