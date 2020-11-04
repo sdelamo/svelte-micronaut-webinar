@@ -1,4 +1,4 @@
-package com.objectcomputing.cubeboard.security;
+package com.objectcomputing.cubeboard.conf;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.context.annotation.ConfigurationProperties;

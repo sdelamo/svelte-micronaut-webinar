@@ -1,5 +1,9 @@
-package com.objectcomputing.cubeboard;
+package com.objectcomputing.cubeboard.controllers;
 
+import com.objectcomputing.cubeboard.Dashboard;
+import com.objectcomputing.cubeboard.DashboardFetcher;
+import com.objectcomputing.cubeboard.versioning.ApiVersion;
+import io.micronaut.core.version.annotation.Version;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -18,6 +22,7 @@ public class DashboardController {
         this.dashboardFetcher = dashboardFetcher;
     }
 
+    @Version(ApiVersion.V1)
     @Get("/dashboards/{slug}")
     @Secured(SecurityRule.IS_AUTHENTICATED)
     public HttpResponse<?> index(@PathVariable String slug) {

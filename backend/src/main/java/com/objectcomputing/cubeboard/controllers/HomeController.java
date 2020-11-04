@@ -1,4 +1,4 @@
-package com.objectcomputing.cubeboard;
+package com.objectcomputing.cubeboard.controllers;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -24,7 +24,7 @@ public class HomeController {
             }
     )
     @Get
-    @Secured(SecurityRule.IS_AUTHENTICATED)
+    @Secured(SecurityRule.IS_ANONYMOUS)
     public HttpResponse<?> index() {
         return HttpResponse.seeOther(URI.create("/swagger-ui/"));
     }
