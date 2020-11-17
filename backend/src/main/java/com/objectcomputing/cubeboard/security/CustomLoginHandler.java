@@ -10,8 +10,10 @@ import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.authentication.UserDetails;
 import io.micronaut.security.handlers.RedirectingLoginHandler;
 import io.micronaut.security.oauth2.endpoint.token.response.OpenIdUserDetailsMapper;
+import io.micronaut.security.token.config.TokenConfiguration;
 
 import javax.inject.Singleton;
+import java.net.URI;
 import java.util.Map;
 
 @Primary
@@ -19,29 +21,30 @@ import java.util.Map;
 public class CustomLoginHandler implements RedirectingLoginHandler {
 
     private final AppConfiguration appConfiguration;
+    private final TokenConfiguration tokenConfiguration;
 
-    public CustomLoginHandler(AppConfiguration appConfiguration) {
+    public CustomLoginHandler(AppConfiguration appConfiguration, TokenConfiguration tokenConfiguration) {
         this.appConfiguration = appConfiguration;
+        this.tokenConfiguration = tokenConfiguration;
     }
 
     @Override
     public MutableHttpResponse<?> loginSuccess(UserDetails userDetails, HttpRequest<?> request) {
-        Map<String, Object> attributes = userDetails.getAttributes("roles", "username"); //TODOuse config instead
+        Map<String, Object> attributes = userDetails.getAttributes(tokenConfiguration.getRolesName(), tokenConfiguration.getNameKey());
         if (attributes.containsKey(OpenIdUserDetailsMapper.OPENID_TOKEN_KEY)) {
             return HttpResponse.seeOther(UriBuilder.of(appConfiguration.getLoginRedirect()).queryParam(appConfiguration.getParamToken(), attributes.get(OpenIdUserDetailsMapper.OPENID_TOKEN_KEY)).build());
 
         }
-        //TODO LOG we should never reach this
-        return HttpResponse.unauthorized();
+        return HttpResponse.seeOther(URI.create(LoginFailedController.PATH));
     }
 
     @Override
     public MutableHttpResponse<?> loginRefresh(UserDetails userDetails, String refreshToken, HttpRequest<?> request) {
-        return null;
+        return HttpResponse.seeOther(URI.create(LoginFailedController.PATH));
     }
 
     @Override
     public MutableHttpResponse<?> loginFailed(AuthenticationResponse authenticationResponse, HttpRequest<?> request) {
-        return null;
+        return HttpResponse.seeOther(URI.create(LoginFailedController.PATH));
     }
 }
