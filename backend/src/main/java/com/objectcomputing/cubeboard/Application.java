@@ -10,7 +10,10 @@ import io.swagger.v3.oas.annotations.info.Info;
         info = @Info(
                 title = "cubedashboardpull",
                 version = ApiVersion.V1,
-                description = "Broker API service Exchange",contact = @Contact(url = "https://objectcomputing.com",name = "Sergio del Amo", email = "delamos@objectcomputing.com")
+                description = "Cube Dashboard Pull API",
+                contact = @Contact(url = "https://objectcomputing.com",
+                        name = "Sergio del Amo",
+                        email = "delamos@objectcomputing.com")
         )
 )
 public class Application {
