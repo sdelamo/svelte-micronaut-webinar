@@ -13,6 +13,18 @@ micronaut:
         mapping: /swagger-ui/**
 ---
 micronaut:
+  security:
+    intercept-url-map:
+      - pattern: /swagger/*
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: /swagger-ui/*
+        http-method: GET
+        access:
+          - isAnonymous()
+---
+micronaut:
   server:
     cors:
       enabled: true
@@ -24,6 +36,7 @@ micronaut:
 ---
 micronaut:
   security:
+    authentication: idtoken
     redirect:
       unauthorized:
         url: '/unauthorized'
@@ -40,18 +53,6 @@ micronaut:
     endpoints:
       logout:
         get-allowed: true
-    authentication: idtoken
-    intercept-url-map:
-      -
-        pattern: /swagger/*
-        http-method: GET
-        access:
-          - isAnonymous()
-      -
-        pattern: /swagger-ui/*
-        http-method: GET
-        access:
-          - isAnonymous()
 ---
 micronaut:
   security:
