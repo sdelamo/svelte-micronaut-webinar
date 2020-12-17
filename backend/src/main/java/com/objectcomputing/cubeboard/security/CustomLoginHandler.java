@@ -33,7 +33,6 @@ public class CustomLoginHandler implements RedirectingLoginHandler {
         Map<String, Object> attributes = userDetails.getAttributes(tokenConfiguration.getRolesName(), tokenConfiguration.getNameKey());
         if (attributes.containsKey(OpenIdUserDetailsMapper.OPENID_TOKEN_KEY)) {
             return HttpResponse.seeOther(UriBuilder.of(appConfiguration.getLoginRedirect()).queryParam(appConfiguration.getParamToken(), attributes.get(OpenIdUserDetailsMapper.OPENID_TOKEN_KEY)).build());
-
         }
         return HttpResponse.seeOther(URI.create(LoginFailedController.PATH));
     }
