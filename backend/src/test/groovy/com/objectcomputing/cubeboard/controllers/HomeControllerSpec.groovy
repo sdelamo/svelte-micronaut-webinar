@@ -1,5 +1,6 @@
-package com.objectcomputing.cubeboard
+package com.objectcomputing.cubeboard.controllers
 
+import com.objectcomputing.cubeboard.EmbeddedServerSpecification
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
