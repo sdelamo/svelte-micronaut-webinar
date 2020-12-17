@@ -1,6 +1,8 @@
 micronaut:
   application:
     name: cubedashboardpull
+
+# swagger & swagger-ui
 ---
 micronaut:
   router:
@@ -23,11 +25,13 @@ micronaut:
         http-method: GET
         access:
           - isAnonymous()
+# cors
 ---
 micronaut:
   server:
     cors:
       enabled: true
+# versioning
 ---
 micronaut:
   router:
