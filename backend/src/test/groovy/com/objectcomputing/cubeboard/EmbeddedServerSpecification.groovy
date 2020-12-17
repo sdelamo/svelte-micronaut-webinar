@@ -16,11 +16,14 @@ abstract class EmbeddedServerSpecification extends Specification implements Conf
     EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer, configuration, Environment.TEST)
 
     @Shared
+    @AutoCleanup
     ApplicationContext applicationContext = embeddedServer.applicationContext
 
     @Shared
+    @AutoCleanup
     HttpClient httpClient = applicationContext.createBean(HttpClient, embeddedServer.URL)
 
     @Shared
+    @AutoCleanup
     BlockingHttpClient client = httpClient.toBlocking()
 }
