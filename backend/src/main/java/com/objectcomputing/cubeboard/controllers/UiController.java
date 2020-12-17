@@ -7,6 +7,8 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.uri.UriBuilder;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @Controller("/ui")
 public class UiController {
@@ -16,6 +18,12 @@ public class UiController {
         this.appConfiguration = appConfiguration;
     }
 
+    @Operation(operationId = "ui",
+            summary = "redirects to the ui application",
+            description = "Redirects to ui service",
+            responses = {
+                    @ApiResponse(responseCode = "303", description = "redirects to UI service"),
+            })
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Get
     public HttpResponse<?> index() {
