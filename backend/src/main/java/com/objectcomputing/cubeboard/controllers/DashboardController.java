@@ -25,11 +25,7 @@ public class DashboardController {
     @Version(ApiVersion.V1)
     @Get("/dashboards/{slug}")
     @Secured(SecurityRule.IS_AUTHENTICATED)
-    public HttpResponse<?> index(@PathVariable String slug) {
-        Optional<Dashboard> dashboardOptional = dashboardFetcher.findBySlug(slug);
-        if (dashboardOptional.isPresent()) {
-            return HttpResponse.ok(dashboardOptional.get());
-        }
-        return HttpResponse.notFound();
+    public Optional<Dashboard> index(@PathVariable String slug) {
+        return dashboardFetcher.findBySlug(slug);
     }
 }
